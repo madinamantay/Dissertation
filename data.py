@@ -17,20 +17,20 @@ def load_class(path: str, class_label: int):
     return train_images
 
 
-def load_train(path: str, class_label: int):
+def load_train(path: str, class_label: int, dim: tuple = (32, 32)):
     images = []
     class_path = os.path.join(path, str(class_label))
     for img_name in os.listdir(class_path):
         if img_name is not None:
             im = cv2.imread(os.path.join(class_path, img_name))
             im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-            im = cv2.resize(im, (32, 32))
+            im = cv2.resize(im, dim)
             images.append(im)
 
     return np.asarray(images)
 
 
-def load_test(path: str, class_label: int):
+def load_test(path: str, class_label: int, dim: tuple = (32, 32)):
     images = []
     test_csv = pd.read_csv(os.path.join(path, 'Test.csv'))
     filtered_test_csv = test_csv[test_csv['ClassId'] == class_label]
@@ -39,7 +39,7 @@ def load_test(path: str, class_label: int):
     for file in filenames:
         im = cv2.imread(os.path.join(path, file))
         im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-        im = cv2.resize(im, (32, 32))
+        im = cv2.resize(im, dim)
         images.append(im)
 
     return np.asarray(images)

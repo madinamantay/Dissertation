@@ -81,9 +81,9 @@ class Classifier:
 
         return accuracy_score(self.y_test, pred) * 100
 
-    def test_once(self, image_path: str):
+    def test_once(self, image_path: str, shape):
         data = []
-        image = Image.open(image_path).resize((32, 32))
+        image = Image.open(image_path).resize(shape)
         data.append(np.array(image))
         x = np.array(data)
 

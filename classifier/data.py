@@ -3,11 +3,11 @@ import numpy as np
 from data import load_train, load_test
 
 
-def load_train_dataset(path: str, classes=43):
+def load_train_dataset(path: str, classes=43, dim: tuple = (32, 32)):
     image_data = []
     image_labels = []
     for label in range(classes):
-        images = load_train(path, label)
+        images = load_train(path, label, dim)
         for image in images:
             image_data.append(image)
             image_labels.append(label)
@@ -23,11 +23,11 @@ def load_train_dataset(path: str, classes=43):
     return image_data, image_labels
 
 
-def load_test_dataset(path: str, classes=43):
+def load_test_dataset(path: str, classes=43, dim: tuple = (32, 32)):
     image_data = []
     image_labels = []
     for label in range(classes):
-        images = load_test(path, label)
+        images = load_test(path, label, dim)
         for image in images:
             image_data.append(image)
             image_labels.append(label)

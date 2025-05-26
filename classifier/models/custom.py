@@ -2,7 +2,7 @@ from keras import layers, models
 from tensorflow.keras.optimizers import Adam
 
 
-def get_classifier_model(shape=(32, 32, 3), lr=0.001):
+def get_classifier_model(num_classes=43, shape=(32, 32, 3), lr=0.001):
     model = models.Sequential([
         layers.Conv2D(16, kernel_size=3, activation='relu', input_shape=shape),
         layers.Conv2D(32, kernel_size=3, activation='relu'),
@@ -19,7 +19,7 @@ def get_classifier_model(shape=(32, 32, 3), lr=0.001):
         layers.BatchNormalization(),
         layers.Dropout(rate=0.5),
 
-        layers.Dense(43, activation='softmax')
+        layers.Dense(num_classes, activation='softmax')
     ])
 
     opt = Adam(learning_rate=lr)
