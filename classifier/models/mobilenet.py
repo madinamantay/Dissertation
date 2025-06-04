@@ -1,18 +1,27 @@
-from keras import layers, models, Input
+import tensorflow as tf
+from tensorflow.keras import layers, models, Input
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.applications import MobileNetV2
 
 
-def get_mobilenet_v2(num_classes=43, shape=(32, 32, 3), lr=0.001):
-    base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=shape)
-    base_model.trainable = False
+def get_mobilenet_v2(num_classes=43, input_shape=(32, 32, 3), lr=0.001, alpha=1.0, weights='imagenet'):
+    base_model = tf.keras.applications.MobileNetV2(
+        input_shape=input_shape,
+        include_top=False,
+        weights=weights,
+        pooling='avg'
+    )
 
-    model = models.Sequential(name="MobileNetV2_Pretrained")
-    model.add(base_model)
-    model.add(layers.GlobalAveragePooling2D()) # Reduce feature maps to a single vector per channel
-    model.add(layers.Dense(num_classes, activation='softmax'))
+    if weights == 'imagenet':
+        base_model.trainable = False
 
-    opt = Adam(learning_rate=lr)
-    model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
+    inputs = Input(shape=input_shape)
+    x = base_model(inputs, training=False)
 
+    outputs = layers.Dense(num_classes, activation='softmax')(x)
+
+    model = models.Model(inputs, outputs, name=f'mobilenetv2_gtsrb_alpha_{alpha}')
+
+    optimizer = Adam(learning_rate=lr)
+    model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
+    
     return model

@@ -1,36 +1,36 @@
-from keras import layers, models
+from tensorflow.keras import layers, models, Input
 from tensorflow.keras.optimizers import Adam
 
 
-def get_vgg_11(num_classes=43, shape=(32, 32, 3), lr=0.001):
-    model = models.Sequential(name="VGG11_Scratch")
+def get_vgg_11(num_classes=43, input_shape=(32, 32, 3), lr=0.001):
+    inputs = Input(shape=input_shape)
 
-    model.add(layers.Conv2D(64, (3, 3), activation='relu', padding='same', input_shape=shape))
-    model.add(layers.MaxPooling2D((2, 2), strides=(2, 2)))
+    x = layers.Conv2D(64, (3, 3), padding='same', activation='relu')(inputs)
+    x = layers.MaxPooling2D((2, 2))(x)
 
-    model.add(layers.Conv2D(128, (3, 3), activation='relu', padding='same'))
-    model.add(layers.MaxPooling2D((2, 2), strides=(2, 2)))
+    x = layers.Conv2D(128, (3, 3), padding='same', activation='relu')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
 
-    model.add(layers.Conv2D(256, (3, 3), activation='relu', padding='same'))
-    model.add(layers.Conv2D(256, (3, 3), activation='relu', padding='same'))
-    model.add(layers.MaxPooling2D((2, 2), strides=(2, 2)))
+    x = layers.Conv2D(256, (3, 3), padding='same', activation='relu')(x)
+    x = layers.Conv2D(256, (3, 3), padding='same', activation='relu')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
 
-    model.add(layers.Conv2D(512, (3, 3), activation='relu', padding='same'))
-    model.add(layers.Conv2D(512, (3, 3), activation='relu', padding='same'))
-    model.add(layers.MaxPooling2D((2, 2), strides=(2, 2)))
+    x = layers.Conv2D(512, (3, 3), padding='same', activation='relu')(x)
+    x = layers.Conv2D(512, (3, 3), padding='same', activation='relu')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
 
-    model.add(layers.Conv2D(512, (3, 3), activation='relu', padding='same'))
-    model.add(layers.Conv2D(512, (3, 3), activation='relu', padding='same'))
-    model.add(layers.MaxPooling2D((2, 2), strides=(2, 2)))
+    x = layers.Conv2D(512, (3, 3), padding='same', activation='relu')(x)
+    x = layers.Conv2D(512, (3, 3), padding='same', activation='relu')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
 
-    model.add(layers.Flatten())
-    model.add(layers.Dense(4096, activation='relu'))
-    model.add(layers.Dropout(0.5))
-    model.add(layers.Dense(4096, activation='relu'))
-    model.add(layers.Dropout(0.5))
-    model.add(layers.Dense(num_classes, activation='softmax'))
+    x = layers.Flatten()(x)
+    x = layers.Dense(512, activation='relu')(x)
+    x = layers.Dropout(0.5)(x)
+    outputs = layers.Dense(num_classes, activation='softmax')(x)
+
+    model = models.Model(inputs, outputs, name='VGG11_GTSRB')
 
     opt = Adam(learning_rate=lr)
-    model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
+    model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
 
     return model
