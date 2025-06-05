@@ -87,10 +87,10 @@ def _get_shapes(model_name):
         return (32, 32), (32, 32, 3)
 
     if model_name == 'vgg11':
-        return (224, 224), (224, 224, 3)
+        return (32, 32), (32, 32, 3)
 
     if model_name == 'resnet18':
-        return (224, 224), (224, 224, 3)
+        return (32, 32), (32, 32, 3)
 
     if model_name == 'mobilenet_v2':
         return (224, 224), (224, 224, 3)
