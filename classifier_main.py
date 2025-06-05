@@ -4,7 +4,7 @@ from classes import class_names
 from classifier import (
     load_train_dataset, load_test_dataset,
     get_classifier_model, get_vgg_11, get_res_net_18, get_mobilenet_v2, Classifier,
-    plot_metrics
+    plot_metrics,
 )
 
 
@@ -56,11 +56,11 @@ def test(model_name: str, model_path: str, test_dir: str):
 
     data_sh, model_sh = _get_shapes(model_name)
 
-    model = _get_classifier_model(model_name, dim=model_sh)
+    model = _get_classifier_model(model_name, model_sh)
     cl.set_model(model)
     cl.load_model(model_path)
 
-    x, y = load_test_dataset(test_dir, data_sh)
+    x, y = load_test_dataset(test_dir, dim=data_sh)
     cl.set_test_data(x, y)
 
     test_acc = cl.test()
@@ -72,7 +72,7 @@ def test_once(model_name: str, model_path: str, image_path: str):
 
     data_sh, model_sh = _get_shapes(model_name)
 
-    model = _get_classifier_model(model_name, dim=model_sh)
+    model = _get_classifier_model(model_name, model_sh)
     cl.set_model(model)
     cl.load_model(model_path)
 
@@ -87,10 +87,10 @@ def _get_shapes(model_name):
         return (32, 32), (32, 32, 3)
 
     if model_name == 'vgg11':
-        return (224, 224), (224, 224, 3)
+        return (32, 32), (32, 32, 3)
 
     if model_name == 'resnet18':
-        return (224, 224), (224, 224, 3)
+        return (32, 32), (32, 32, 3)
 
     if model_name == 'mobilenet_v2':
         return (224, 224), (224, 224, 3)
