@@ -50,17 +50,17 @@ python gan_main.py --action="mix_datasets" --source-dir-1="./data/Train/" --sour
 
 Train model on train dataset
 ```shell
-python classifier_main.py --action="train" --train-dir="./data/Train" --model-path="./model.h5" --report-file="./metrics.csv"
+python classifier_main.py --action="train" --train-dir="./data/Train" --model-name="" --classes=43 --epochs=150 --model-path="./model.h5" --report-file="./metrics.csv"
 ```
 
 Test model on test dataset
 ```shell
-python classifier_main.py --action="test" --model-path="./model.h5" --test-dir="./data"
+python classifier_main.py --action="test" --model-name="" --model-path="./model.h5" --classes=43 --test-dir="./data"
 ```
 
 Make test for single image
 ```shell
-python classifier_main.py --action="test_once" --model-path="./model.h5" --image-path="./data/Test/1.png"
+python classifier_main.py --action="test_once" --model-name="" --model-path="./model.h5" --classes=43 --image-path="./data/Test/1.png"
 ```
 
 Plot accuracy and loss metrics from file
